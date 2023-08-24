@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Copy text to the clipboard</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      ::selection {
+        background-color: orangered;
+        color: white;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      input,
+      input:focus {
+        padding: 0.5rem 1rem;
+        font-size: 1.2rem;
+        border-radius: 0.5rem;
+        border: 2px solid orangered;
+        outline-color: orangered;
+        color: orangered;
+        text-align: left;
+      }
+      button {
+        margin-left: 1rem;
+        border: none;
+        outline: none;
+        padding: 0.625rem 2rem;
+        text-align: center;
+        font-size: 1.2rem;
+        border-radius: 0.5rem;
+        background-color: orangered;
+        color: white;
+        cursor: pointer;
+      }
+      .tooltip-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .tooltip-container .tooltip-text {
+        visibility: hidden;
+        width: 180px;
+        background-color: #f5a75e;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 150%;
+        left: 50%;
+        margin-left: -75px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .tooltip-container .tooltip-text::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+      }
+
+      .tooltip-container:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" id="text" value="Hello World" />
+    <div class="tooltip-container">
+      <button onclick="copyText()" onmouseout="tooltipFunc()">
+        <span class="tooltip-text" id="myTooltip">Copy to clipboard</span>
+        Copy
+      </button>
+    </div>
+
+    <script>
+      function copyText() {
+        const text = document.getElementById("text");
+
+        text.select();
+        text.setSelectionRange(0, 99999); // For mobile devices
+
+        navigator.clipboard.writeText(text.value);
+
+        var tooltip = document.getElementById("myTooltip");
+        tooltip.innerHTML = "Copied: " + text.value;
+      }
+      function tooltipFunc() {
+        var tooltip = document.getElementById("myTooltip");
+        tooltip.innerHTML = "Copy to clipboard";
+      }
+    </script>
+  </body>
+</html>
